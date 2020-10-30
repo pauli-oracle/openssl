@@ -65,6 +65,16 @@ provider-base
 
  void self_test_cb(OPENSSL_CORE_CTX *ctx, OSSL_CALLBACK **cb, void **cbarg)
 
+ size_t get_entropy(const OSSL_CORE_HANDLE *handle,
+                    unsigned char **pout, int entropy,
+                    size_t min_len, size_t max_len)
+ void cleanup_entropy(const OSSL_CORE_HANDLE *handle,
+                      unsigned char *buf, size_t len)
+ size_t get_nonce(const OSSL_CORE_HANDLE *handle,
+                    unsigned char **pout, size_t min_len, size_t max_len,
+                    const void *salt, size_t salt_len)
+ void cleanup_nonce(const OSSL_CORE_HANDLE *handle,
+                    unsigned char *buf, size_t len)
 
  /* Functions offered by the provider to libcrypto */
  void provider_teardown(void *provctx);
@@ -129,6 +139,10 @@ provider):
  BIO_vprintf                    OSSL_FUNC_BIO_VPRINTF
  OPENSSL_cleanse                OSSL_FUNC_OPENSSL_CLEANSE
  OSSL_SELF_TEST_set_callback    OSSL_FUNC_SELF_TEST_CB
+ ossl_rand_get_entropy          OSSL_FUNC_GET_ENTROPY
+ ossl_rand_cleanup_entropy      OSSL_FUNC_CLEANUP_ENTROPY
+ ossl_rand_get_nonce            OSSL_FUNC_GET_NONCE
+ ossl_rand_cleanup_nonce        OSSL_FUNC_CLEANUP_NONCE
 
 For I<*out> (the B<OSSL_DISPATCH> array passed from the provider to
 F<libcrypto>):
@@ -209,6 +223,28 @@ that a provider does not mix BIOs from the core with BIOs used on the provider
 side (the two are not compatible).
 OSSL_SELF_TEST_set_callback() is used to set an optional callback that can be
 passed into a provider. This may be ignored by a provider.
+ossl_rand_get_entropy() and ossl_rand_cleanup_entropy() are used to get entropy
+from the operating system.
+
+get_entropy() is used to get entropy from the operating system.  The number
+of bits of entropy is specified by B<entropy> and the generated entropy will
+be at least B<min_len> and at most B<max_len> bytes in size.  The entropy
+is returned in B<*pout>.  This function returns the length of the entropy
+generated or zero on error.
+
+cleanup_entropy() is used to clean up and free the entropy returned by
+get_entropy().  The entropy pointer returned by get_entropy() is passed in
+B<buf> and it's length in B<len>.
+
+get_nonce() is used to generate a nonce from system parameters.  The generated
+nonce will be at least B<min_len> and at most B<max_len> bytes in size.  A
+provider generated B<salt> of length B<salt_len> bytes will be included in the
+returned nonce.  The nonce is returned in B<*pout>.  This function returns the
+length of the nonce or zero on error.
+
+cleanup_nonce() is used to clean up and free the nonce returned by
+get_nonce().  The nonce pointer returned by get_nonce() is passed in
+B<buf> and it's length in B<len>.
 
 =head2 Provider functions
 
