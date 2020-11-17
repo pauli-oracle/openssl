@@ -141,7 +141,7 @@ int ERR_load_PROV_strings(void);
 # define PROV_R_NO_PARAMETERS_SET                         177
 # define PROV_R_OPERATION_NOT_SUPPORTED_FOR_THIS_KEYTYPE  178
 # define PROV_R_OUTPUT_BUFFER_TOO_SMALL                   106
-# define PROV_R_PARENT_CANNOT_GENERATE                    228
+# define PROV_R_PARENT_CANNOT_GENERATE_RANDOM_NUMBERS     228
 # define PROV_R_PARENT_LOCKING_NOT_ENABLED                182
 # define PROV_R_PARENT_STRENGTH_TOO_WEAK                  194
 # define PROV_R_PATH_MUST_BE_ABSOLUTE                     219

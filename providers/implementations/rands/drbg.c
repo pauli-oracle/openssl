@@ -161,7 +161,7 @@ static size_t prov_drbg_get_entropy(PROV_DRBG *drbg, unsigned char **pout,
     }
 
     if (drbg->parent_generate == NULL) {
-        ERR_raise(ERR_LIB_PROV, PROV_R_PARENT_CANNOT_GENERATE);
+        ERR_raise(ERR_LIB_PROV, PROV_R_PARENT_CANNOT_GENERATE_RANDOM_NUMBERS);
         return 0;
     }
 
