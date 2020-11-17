@@ -57,11 +57,9 @@ size_t ossl_rand_get_nonce(ossl_unused OSSL_CORE_HANDLE *handle,
         return 0;
     }
 
-    /* Get entropy by polling system entropy sources. */
     if (!prov_pool_add_nonce_data(pool))
         goto err;
 
-    /* Add the salt */
     if (salt != NULL && !rand_pool_add(pool, salt, salt_len, 0))
         goto err;
     ret   = rand_pool_length(pool);
