@@ -225,7 +225,7 @@ OSSL_SELF_TEST_set_callback() is used to set an optional callback that can be
 passed into a provider. This may be ignored by a provider.
 
 get_entropy() retrieves seeding material from the operating system.
-The seed material will have at least I<entropy> bytes of randomness and the
+The seeding material will have at least I<entropy> bytes of randomness and the
 output will have at least I<min_len> and at most I<max_len> bytes.
 The buffer address is stored in I<*pout> and the buffer length is
 returned to the caller.  On error, zero is returned.
