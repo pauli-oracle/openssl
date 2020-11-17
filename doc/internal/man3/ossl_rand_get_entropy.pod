@@ -10,28 +10,36 @@ ossl_rand_get_nonce, ossl_rand_cleanup_nonce
 
  #include "crypto/rand.h"
 
- size_t ossl_rand_get_entropy(unsigned char **pout, int entropy,
+ size_t ossl_rand_get_entropy(OSSL_CORE_HANDLE *handle,
+                              unsigned char **pout, int entropy,
                               size_t min_len, size_t max_len);
- void ossl_rand_cleanup_entropy(unsigned char *buf, size_t len);
- size_t ossl_rand_get_nonce(unsigned char **pout, int entropy, size_t min_len,
+ void ossl_rand_cleanup_entropy(OSSL_CORE_HANDLE *handle,
+                                unsigned char *buf, size_t len);
+ size_t ossl_rand_get_nonce(OSSL_CORE_HANDLE *handle,
+                            unsigned char **pout, size_t min_len,
                             size_t max_len, const void *salt, size_t salt_len);
- void ossl_rand_cleanup_nonce(unsigned char *buf, size_t len);
+ void ossl_rand_cleanup_nonce(OSSL_CORE_HANDLE *handle,
+                              unsigned char *buf, size_t len);
 
 =head1 DESCRIPTION
 
 ossl_rand_get_entropy() retrieves seeding material from the operating system.
-The seed material will have at least I<entropy> bytes of randomness and the
-output will have at least I<min_len> and at most I<max_len> bytes.
-The material is returned in I<*pout>.
+The seeding material will have at least I<entropy> bytes of randomness and is
+stored in a buffer which contains at least I<min_len> and at most I<max_len>
+bytes.  The buffer address is stored in I<*pout> and the buffer length is
+returned to the caller.  
 
 ossl_rand_cleanup_entropy() cleanses and frees any storage allocated by
 ossl_rand_get_entropy().  The seeding buffer is pointed to by I<buf> and is
 of length I<len> bytes.
 
-ossl_rand_get_nonce() retrieves a nonce using the passed salt parameter
-I<salt> of length I<salt_len> and operating system specific informatiom.
-The output will have at least I<min_len> and at most I<max_len> bytes.
-The nonce is returned in I<*pout>.
+ossl_rand_get_nonce() retrieves a nonce using the passed I<salt> parameter
+of length I<salt_len> and operating system specific information.
+The I<salt> should contain uniquely identifying information and this is
+included, in an unspecified manner, as part of the output.
+The output is stored in a buffer which contrains at least I<min_len> and at
+most I<max_len> bytes.  The buffer address is stored in I<*pout> and the
+buffer length returned to the caller.
 
 ossl_rand_cleanup_nonce() cleanses and frees any storage allocated by
 ossl_rand_get_nonce().  The nonce buffer is pointed to by I<buf> and is
