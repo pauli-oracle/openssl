@@ -1,0 +1,19 @@
+strict digraph rand {
+    begin [label=start, color="#deeaee", style="filled"];
+    newed [fontcolor="#c94c4c", style="solid"];
+    instantiated [fontcolor="#c94c4c"];
+    uninstantiated [fontcolor="#c94c4c"];
+    end [label="freed", color="#deeaee", style="filled"];
+
+    begin -> newed [label="EVP_RAND_CTX_new"];
+    newed -> instantiated [label="EVP_RAND_instantiate"];
+    instantiated -> instantiated [label="EVP_RAND_generate"];
+    instantiated -> uninstantiated [label="EVP_RAND_uninstantiate"];
+    uninstantiated -> end [label="EVP_RAND_CTX_free"];
+//    instantiated -> end [label="EVP_RAND_CTX_free", style=dotted,
+//                         color="#034f84", fontcolor="#034f84"];
+//    newed -> end [label="EVP_RAND_CTX_free", style=dotted, color="#034f84",
+//                  fontcolor="#034f84"];
+    uninstantiated -> instantiated [label="EVP_RAND_instantiate", style=dashed, color="#034f84", fontcolor="#034f84"];
+}
+ 

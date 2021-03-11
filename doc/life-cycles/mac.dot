@@ -1,0 +1,28 @@
+digraph mac {
+    begin [label=start, color="#deeaee", style="filled"];
+    newed [fontcolor="#c94c4c", style="solid"];
+    initialised [fontcolor="#c94c4c"];
+    updated [fontcolor="#c94c4c"];
+    finaled [fontcolor="#c94c4c"];
+    end [label=freed, color="#deeaee", style="filled"];
+
+    begin -> newed [label="EVP_MAC_CTX_new"];
+    newed -> initialised [label="EVP_MAC_init"];
+    initialised -> updated [label="EVP_MAC_update"];
+    updated -> updated [label="EVP_MAC_update"];
+    updated -> finaled [label="EVP_MAC_final"];
+    updated -> finaled [label="EVP_MAC_final_XOF", style=dashed];
+    finaled -> finaled [label="EVP_MAC_final_XOF", style=dashed];
+    finaled -> end [label="EVP_MAC_CTX_free"];
+//    updated -> end [label="EVP_MAC_CTX_free", style=dotted,
+//                    color="#034f84", fontcolor="#034f84"];
+//    initialised -> end [label="EVP_MAC_CTX_free", style=dotted,
+//                        color="#034f84", fontcolor="#034f84"];
+//    newed -> end [label="EVP_MAC_CTX_free", style=dotted, color="#034f84",
+//                  fontcolor="#034f84"];
+    updated -> initialised [label="EVP_MAC_init", style=dashed,
+                            color="#034f84", fontcolor="#034f84"];
+    finaled -> initialised [label="EVP_MAC_init", style=dashed,
+                            color="#034f84", fontcolor="#034f84"];
+}
+ 
